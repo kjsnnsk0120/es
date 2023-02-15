@@ -1,0 +1,49 @@
+version: "3"
+services:
+  es01:
+    build:
+      context: "."
+      dockerfile: "dockerfile_es"
+    container_name: es01
+    environment:
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200
+    networks:
+      - es_net
+
+    # kibana
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.8
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://es01:9200
+    networks:
+      - es_net
+
+  flask:
+    build:
+      context: "."
+      dockerfile: "dockerfile_flask"
+    ports:
+      - "8080:8080"
+    volumes:
+      - type: bind
+        source: "./flask"
+        target: "/home/flask"
+      - type: bind
+        source: "./data"
+        target: "/home/data"
+    networks:
+      - es_net
+    tty: true
+
+networks:
+  es_net:

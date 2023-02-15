@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>検索しすてむぞい</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    </head>
+    <body>
+        <h2>
+            <form action="{{url_for('search')}}" method="get">
+                <p>検索ワード：<input type="text" name="item" size="30"></p>
+                <p><input type="submit" value="探す"></p>
+            </form>
+        </h2>
+        <a href="/upload">アップロードする</a>
+    </body>
+</html>
